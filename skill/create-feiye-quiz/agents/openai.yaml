@@ -1,0 +1,4 @@
+interface:
+  display_name: "扉页测评出题"
+  short_description: "生成、校验并分享可导入「扉页」网站的文学原型测评 JSON"
+  default_prompt: "使用 $create-feiye-quiz 为“红楼梦人物”生成一套可分享的文学原型测评。"

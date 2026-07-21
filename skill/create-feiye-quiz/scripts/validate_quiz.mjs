@@ -10,8 +10,10 @@ function usage() {
   process.exit(2);
 }
 
-function readStdin() {
-  return fs.readFileSync(0, "utf8");
+async function readStdin() {
+  const chunks = [];
+  for await (const chunk of process.stdin) chunks.push(chunk);
+  return Buffer.concat(chunks).toString("utf8");
 }
 
 function parseArgs(argv) {
@@ -127,7 +129,7 @@ function shareUrl(test, base) {
 const { input, shareBase } = parseArgs(process.argv);
 let source;
 try {
-  source = input === "-" ? readStdin() : fs.readFileSync(path.resolve(input), "utf8");
+  source = input === "-" ? await readStdin() : fs.readFileSync(path.resolve(input), "utf8");
 } catch (error) {
   console.error(JSON.stringify({ ok: false, errors: [`Cannot read input: ${error.message}`] }, null, 2));
   process.exit(1);

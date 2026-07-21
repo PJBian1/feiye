@@ -1,5 +1,5 @@
-/* 扉页 · Open Literary Lab
- * 纯静态 SPA：测评、AI 出题、JSON 导入、结果卡下载与开源方法。
+/* 扉页 · Open Quiz Business Playbook
+ * 纯静态 SPA：商业模式、内容分析、AI 出题、JSON 导入、结果卡与开源方法。
  * 自建测试经 deflate 压缩后编码进 URL hash，不上传、不追踪。 */
 
 (function () {
@@ -347,27 +347,27 @@
   function shell(inner, active) {
     return '<div class="page">' +
       '<div class="topbar-wrap"><header class="topbar">' +
-        '<a class="brand" href="#/" aria-label="扉页首页"><span class="brand-mark">扉</span><span>扉页</span><span class="brand-sub">· Open Lab</span></a>' +
+        '<a class="brand" href="#/" aria-label="扉页首页"><span class="brand-mark">扉</span><span>扉页</span><span class="brand-sub">· Open Playbook</span></a>' +
         '<nav aria-label="主导航">' +
-          navLink("首页", "#/", "home", active) +
-          navLink("测评", "#/tests", "tests", active) +
-          navLink("创建", "#/create", "create", active) +
-          navLink("提示词", "#/prompts", "prompts", active) +
+          navLink("模式", "#/business", "business", active) +
+          navLink("从零制作", "#/roadmap", "roadmap", active) +
+          navLink("案例", "#/case", "case", active) +
+          navLink("工具", "#/tools", "tools", active) +
           navLink("开源", "#/opensource", "opensource", active) +
         '</nav>' +
         '<a class="repo-link" href="' + REPO_URL + '" target="_blank" rel="noopener">GITHUB ↗</a>' +
       '</header></div>' +
       '<main id="main-content">' + inner + '</main>' +
       '<footer class="site-foot"><div class="content foot-inner">' +
-        '<div><div class="foot-brand">扉页 · Open Literary Lab</div><div class="foot-copy">每个人都是一本打开到一半的书。免费、开源、无登录、无追踪。</div></div>' +
-        '<div class="foot-links"><a href="#/tests">测评库</a><a href="#/prompts">出题提示词</a><a href="#/opensource">建站方法</a><a href="' + REPO_URL + '" target="_blank" rel="noopener">MIT · GitHub</a></div>' +
+        '<div><div class="foot-brand">扉页 · Open Quiz Business Playbook</div><div class="foot-copy">项目本身免费开源；它展示的是经营者如何做出、销售并用链接交付一件测评数字商品。</div></div>' +
+        '<div class="foot-links"><a href="#/business">商业模式</a><a href="#/roadmap">七步闭环</a><a href="#/tests">可运行样品</a><a href="' + REPO_URL + '" target="_blank" rel="noopener">MIT · GitHub</a></div>' +
       '</div></footer><div class="toast" id="toast" role="status" aria-live="polite"></div>' +
     '</div>';
   }
 
   function render(inner, title, active) {
     app.innerHTML = shell(inner, active);
-    document.title = title ? title + " · 扉页" : "扉页 · 开源文学原型测评实验室";
+    document.title = title ? title + " · 扉页" : "扉页 · 开源测评数字商品操作手册";
     window.scrollTo(0, 0);
   }
 
@@ -386,38 +386,111 @@
   function viewHome() {
     var firstHref = PRESETS.length ? "#/t/" + PRESETS[0].id : "#/tests";
     var cards = PRESETS.slice(0, 3).map(testCard).join("");
-    var resultTotal = PRESETS.reduce(function (sum, test) { return sum + Object.keys(test.results || {}).length; }, 0);
     render(
       '<section class="home-hero"><div class="content hero-copy">' +
-        '<div class="eyebrow">FEIYE · OPEN LITERARY LAB</div>' +
-        '<h1>扉页<span>每个人都是一本打开到一半的书。</span></h1>' +
-        '<p>回答几个关于日常的瞬间，认领那个替你活过的文学人物。也可以让 AI 替你出题，把自己的测试装订成一条链接，寄给朋友。</p>' +
-        '<div class="hero-actions"><a class="btn primary" href="' + firstHref + '">开始第一套测评 →</a><a class="btn" href="#/create">做一套自己的题</a></div>' +
-        '<div class="manifesto"><span><b>ANSWER → REVEAL</b> · 回答，然后看见</span><span><b>PROMPT → QUIZ</b> · 一句话，装订成测试</span><span><b>FORK → YOURS</b> · 复制代码，拥有整座网站</span></div>' +
+        '<div class="eyebrow">FEIYE · OPEN QUIZ BUSINESS PLAYBOOK</div>' +
+        '<h1>把一个想测的话题，<span>做成一件可以销售的数字商品。</span></h1>' +
+        '<p>免费开源从内容分析、题目制作、生成网站，到平台销售和发送链接交付的完整方法。无需先做支付、账号或服务器，先跑通最小的一单。</p>' +
+        '<div class="hero-actions"><a class="btn primary" href="#/business">先看懂这门生意 →</a><a class="btn" href="#/roadmap">直接做第一件商品</a></div>' +
+        '<div class="manifesto"><span><b>内容</b>是销售员 · <b>平台商品</b>是收银台</span><span><b>测评链接</b>是交付物 · <b>结果页面</b>是消费体验</span></div>' +
+      '</div></section>' +
+      '<section class="section-block compact"><div class="content"><div class="loop-line" aria-label="七步最小闭环">' +
+        '<span>看需求</span><i>→</i><span>定商品</span><i>→</i><span>做题目</span><i>→</i><span>生成链接</span><i>→</i><span>发布内容</span><i>→</i><span>用户购买</span><i>→</i><span>发送链接</span>' +
+      '</div></div></section>' +
+      '<section class="section-block"><div class="content">' +
+        '<div class="section-head"><span class="section-kicker">BUSINESS IN PLAIN WORDS · 把生意说人话</span><h2>经营者卖的不是几道题，<br>而是一段完整体验。</h2><p>消费者为“我会得到一个关于自己的答案”而购买；经营者用内容找到他，用链接完成交付。</p></div>' +
+        '<div class="value-grid"><article><span>01 · 需求</span><h3>我到底是哪一种人？</h3><p>自我解释、身份表达、好奇和分享谈资，是测评商品最基础的消费动机。</p></article><article><span>02 · 供给</span><h3>一套可完成的测评</h3><p>主题、题目、计分、结果解释、网站和结果卡共同组成商品，而不是单独一份题库。</p></article><article><span>03 · 连接</span><h3>平台内容制造“我也想测”</h3><p>内容负责展示问题、结果切片和使用场景；平台现有商品能力负责交易。</p></article><article><span>04 · 交付</span><h3>付款后发送完整链接</h3><p>买家能打开、答题并看到结果，本次数字商品交付就已经完成。</p></article></div>' +
+        '<div class="section-cta"><a class="btn wine" href="#/business">展开需求、供给与连接 →</a></div>' +
       '</div></section>' +
       '<section class="section-block"><div class="content">' +
-        '<div class="section-head"><span class="section-kicker">THREE ROUTES · 三条入口</span><h2>你今天想翻开哪一页？</h2><p>来玩、来创作，或者把整套方法带走。三条路线都免费，也不需要注册。</p></div>' +
-        '<div class="route-grid">' +
-          '<a class="route-card" href="#/tests"><span class="file-label">tests.json</span><span class="route-no">01</span><h3>我想测一测</h3><p>从馆藏里挑一套，回答几个具体的生活瞬间，领取自己的文学原型藏书票。</p><span class="route-go">进入测评库 →</span></a>' +
-          '<a class="route-card" href="#/prompts"><span class="file-label">prompt.md</span><span class="route-no">02</span><h3>我想出一套题</h3><p>复制公开提示词发给豆包或任何 AI，生成 JSON，再回到创建页得到分享链接。</p><span class="route-go">复制出题咒语 →</span></a>' +
-          '<a class="route-card" href="#/opensource"><span class="file-label">build.md</span><span class="route-no">03</span><h3>我想复制网站</h3><p>查看数据结构、评分方法、文件目录和部署步骤，Fork 后换成自己的品牌与题库。</p><span class="route-go">查看开源方法 →</span></a>' +
-        '</div>' +
-      '</div></section>' +
-      '<section class="section-block compact"><div class="content metrics" aria-label="扉页规模">' +
-        '<div class="metric"><strong>' + PRESETS.length + '</strong><div class="metric-label">CURATED TESTS · 馆藏</div></div>' +
-        '<div class="metric"><strong>' + resultTotal + '</strong><div class="metric-label">ARCHETYPES · 原型</div></div>' +
-        '<div class="metric"><strong>0</strong><div class="metric-label">LOGIN · 登录</div></div>' +
-        '<div class="metric"><strong>MIT</strong><div class="metric-label">LICENSE · 协议</div></div>' +
+        '<div class="section-head"><span class="section-kicker">FOUR WORKBENCHES · 四个工作台</span><h2>不是读完一篇教程，<br>而是逐件产出可用资产。</h2></div>' +
+        '<div class="stage-grid"><a href="#/research"><b>01</b><span>内容分析</span><h3>找到有人想测的题目</h3><p>收集平台需求证据，写出明确的人群、问题、购买动机与结果承诺。</p><em>产出：测评选题卡 →</em></a><a href="#/prompts"><b>02</b><span>题目制作</span><h3>把主题变成标准题库</h3><p>用公开提示词生成原型、场景题、计分和结果解释，再完成结构校验。</p><em>产出：标准 JSON →</em></a><a href="#/create"><b>03</b><span>建站</span><h3>把题库变成商品链接</h3><p>导入、校验、试玩，生成无需账号和服务器就能发送的完整测评链接。</p><em>产出：可交付链接 →</em></a><a href="#/sell"><b>04</b><span>销售与交付</span><h3>发布内容，付款后发链接</h3><p>准备封面、销售笔记、商品说明和交付话术，用最简单的方式完成第一单。</p><em>产出：已上架商品 →</em></a></div>' +
       '</div></section>' +
       '<section class="section-block"><div class="content">' +
-        '<div class="section-head row"><div><span class="section-kicker">THE SHELF · 馆藏</span><h2>先从一套好题开始。</h2><p>首批三套题逐字打磨。题不求多，先让每个答案都值得被分享。</p></div><a class="text-link" href="#/tests">浏览全部测评 →</a></div>' +
-        '<div class="test-grid">' + cards + '</div>' +
+        '<div class="section-head row"><div><span class="section-kicker">WORKING CASE · 可运行案例</span><h2>文学原型，是第一件完整样品。</h2><p>它展示了从题目、结果、网页到链接交付的最终形态，不把案例销量伪装成市场证据。</p></div><a class="text-link" href="#/case">查看案例全链路 →</a></div>' +
+        '<div class="test-grid">' + cards + '</div><div class="section-cta"><a class="btn" href="' + firstHref + '">站在买家视角试玩 →</a></div>' +
       '</div></section>' +
       '<section class="section-block"><div class="content glass-panel open-banner">' +
-        '<div><span class="section-kicker">OPEN SOURCE · 免费带走</span><h2>开源的不只是代码，<br>还有做法。</h2><p>提示词、题目格式、评分逻辑、前端源码、部署方法和可安装 Skill 全部公开。你可以 Fork、二创、商用，只请保持它对普通用户免费。</p></div>' +
-        '<div class="btn-row"><a class="btn wine" href="#/opensource">查看建站方法</a><a class="btn" href="' + REPO_URL + '" target="_blank" rel="noopener">查看源码 ↗</a></div>' +
+        '<div><span class="section-kicker">100% OPEN · 完整开源</span><h2>网站不靠这套方法收费，<br>而是把整套方法交给你。</h2><p>商业地图、操作教程、提示词、题库格式、网站代码、内容模板、商品说明、交付话术和复盘表全部公开。你可以 Fork、修改与商用，但不能把案例当成收益承诺。</p></div>' +
+        '<div class="btn-row"><a class="btn wine" href="#/tools">打开工具箱</a><a class="btn" href="' + REPO_URL + '" target="_blank" rel="noopener">查看源码 ↗</a></div>' +
       '</div></section>',
       "", "home"
+    );
+  }
+
+  function viewBusiness() {
+    render(
+      '<section class="doc-hero business-hero"><div class="content"><span class="section-kicker">THE MODEL · 商业模式</span><h1>卖的不是答案，<br>是一次被解释的体验。</h1><p>经营者发现一个“有人想测”的问题，把它做成数字商品，用平台内容获得订单，付款后发送链接完成交付。扉页把这条最小路径完整开源。</p><div class="metrics"><div class="metric"><strong>3</strong><div class="metric-label">ROLES · 角色</div></div><div class="metric"><strong>7</strong><div class="metric-label">STEPS · 步骤</div></div><div class="metric"><strong>1</strong><div class="metric-label">LINK · 交付</div></div><div class="metric"><strong>0</strong><div class="metric-label">BACKEND · 后端</div></div></div></div></section>' +
+      '<section class="section-block compact"><div class="content"><div class="section-head"><span class="section-kicker">VALUE EXCHANGE · 三方价值交换</span><h2>谁需要什么，谁提供什么。</h2></div><div class="role-grid"><article><span>经营者</span><h3>生产和销售商品</h3><p>选择主题，制作题目和网站，发布销售内容；订单完成后发送链接。</p><ul><li>得到：数字商品收入与需求反馈</li><li>付出：选题、制作、内容与交付劳动</li></ul></article><article><span>消费者</span><h3>购买关于自己的答案</h3><p>因为好奇、自我解释、身份表达或社交谈资，购买并完成测评。</p><ul><li>得到：可理解、可保存的结果体验</li><li>付出：价格、时间与注意力</li></ul></article><article><span>内容平台</span><h3>让需求与商品相遇</h3><p>评论、互动和既有商品提供需求信号；内容分发与平台商品完成连接和交易。</p><ul><li>得到：持续的内容与交易</li><li>提供：流量、信号和现有交易能力</li></ul></article></div></div></section>' +
+      '<section class="section-block"><div class="content"><div class="section-head"><span class="section-kicker">SUPPLY → DEMAND → DELIVERY</span><h2>一件商品的五个组成部分。</h2><p>每一部分都缺一不可。只有题目，没有销售内容；只有内容，没有可打开的链接，都不是完整商品。</p></div><div class="business-map"><article><b>01</b><span>需求</span><h3>“我到底是哪一种？”</h3><p>用户原本就存在的好奇、困惑和身份表达需要。</p></article><i>→</i><article><b>02</b><span>供给</span><h3>一套可完成的测评</h3><p>主题、题目、计分、结果、网站和结果卡。</p></article><i>→</i><article><b>03</b><span>连接</span><h3>让人产生“我也想测”</h3><p>平台封面、标题、正文、结果切片与商品页。</p></article><i>→</i><article><b>04</b><span>交易</span><h3>使用平台现有收银台</h3><p>第一版不在测评网站里重复建设支付系统。</p></article><i>→</i><article><b>05</b><span>交付</span><h3>发送完整测评链接</h3><p>买家可以打开、答题、查看结果，交付结束。</p></article></div></div></section>' +
+      '<section class="section-block"><div class="content split-statement"><div><span class="section-kicker">WHAT IS THE PRODUCT? · 商品边界</span><h2>经营者真正需要做出的，是一个商品包。</h2></div><div class="check-stack"><p>01 · 一张有需求证据的选题卡</p><p>02 · 一份通过校验的题库 JSON</p><p>03 · 一条完整可打开的测评链接</p><p>04 · 一套封面、销售内容和商品说明</p><p>05 · 一段可以直接发送的交付话术</p></div></div></section>' +
+      '<section class="section-block"><div class="content glass-panel boundary-panel"><div><span class="section-kicker">MVP BOUNDARY · 第一版边界</span><h2>先证明有人愿意买，<br>不先证明系统足够复杂。</h2></div><div class="boundary-grid"><span>不接入支付</span><span>不做账号</span><span>不做订单系统</span><span>不做一客一码</span><span>不保存答案</span><span>不限制转发</span><span>不承诺盈利</span><span>不冒充专业诊断</span></div><div class="btn-row"><a class="btn primary" href="#/roadmap">进入七步最小闭环 →</a><a class="btn" href="playbook/README.md" download>下载商业模式说明</a></div></div></section>',
+      "商业模式", "business"
+    );
+  }
+
+  function viewRoadmap() {
+    render(
+      '<section class="doc-hero"><div class="content"><span class="section-kicker">FIRST PRODUCT · 从零制作</span><h1>从一个平台信号，<br>走到一条交付链接。</h1><p>每一步都必须留下一个具体产物。不是“学会了”，而是下一步可以直接使用。</p></div></section>' +
+      '<section class="section-block compact"><div class="content"><div class="playbook-steps">' +
+        '<article><b>01</b><div><span>内容分析</span><h2>看见真实需求</h2><p>采集相关内容、商品和评论区用户原话，判断什么问题已经有人关心。</p><strong>完成物：10 条以上需求证据</strong><a href="#/research">打开内容分析工作台 →</a></div></article>' +
+        '<article><b>02</b><div><span>定义商品</span><h2>把主题写成一句承诺</h2><p>确定给谁测、测什么、结果是什么，以及用户为什么不能只看一篇免费内容。</p><strong>完成物：测评选题卡</strong><a href="playbook/templates/01-topic-card.md" download>下载选题卡 ↓</a></div></article>' +
+        '<article><b>03</b><div><span>题目制作</span><h2>生成并校验标准题库</h2><p>先定结果原型，再写具体场景题；检查评分覆盖、事实和引文。</p><strong>完成物：标准 JSON</strong><a href="#/prompts">使用公开出题提示词 →</a></div></article>' +
+        '<article><b>04</b><div><span>建站</span><h2>生成完整测评链接</h2><p>粘贴或上传 JSON，完成格式校验，站在买家视角从封面答到结果。</p><strong>完成物：已试玩的商品链接</strong><a href="#/create">打开链接生成器 →</a></div></article>' +
+        '<article><b>05</b><div><span>发布销售内容</span><h2>让人产生“我也想测”</h2><p>用具体场景开头，展示结果切片，明确商品内容和行动指令。</p><strong>完成物：封面、笔记与商品说明</strong><a href="#/sell">打开销售与交付工作台 →</a></div></article>' +
+        '<article><b>06</b><div><span>成交与交付</span><h2>买家付款后发送链接</h2><p>不在网站重复建设支付。使用平台现有交易能力，订单完成后发送完整链接。</p><strong>完成物：买家可以开始答题</strong><a href="playbook/templates/04-delivery-message.md" download>下载交付话术 ↓</a></div></article>' +
+        '<article><b>07</b><div><span>复盘</span><h2>记录结果，再决定是否升级</h2><p>记录曝光、互动、商品访问、咨询、订单、退款和交付异常；不收集买家答题隐私。</p><strong>完成物：下一轮保留或修改的判断</strong><a href="playbook/templates/06-review-sheet.csv" download>下载复盘表 ↓</a></div></article>' +
+      '</div><div class="roadmap-end glass-panel"><span>最小闭环完成判定</span><h2>不是网站上线，而是买家付款后收到链接，并且能够开始答题。</h2><a class="btn primary" href="playbook/templates/05-first-sale-checklist.md" download>下载首单检查表</a></div></div></section>',
+      "从零制作", "roadmap"
+    );
+  }
+
+  function viewResearch() {
+    render(
+      '<section class="doc-hero"><div class="content"><span class="section-kicker">CONTENT RESEARCH · 内容分析</span><h1>先找到有人想测的问题，<br>再开始写题。</h1><p>AI 可以快速生成供给，但不能替你证明需求存在。第一步是把平台信号和用户原话留下来。</p></div></section>' +
+      '<section><div class="content doc-layout"><article class="doc-main glass-panel"><h2>内容分析不是追爆款</h2><p>你要找的不是“哪个标题点赞多”，而是一个反复出现、又适合被测评回答的问题。真正有用的证据包括：多人描述相似处境、评论区主动问“我是哪种”、现有商品在卖什么，以及用户怎样描述购买后的期待。</p>' +
+        '<h2>第一轮只采十条</h2><div class="steps"><div class="step"><div><h3>锁定一个人群</h3><p>不要从“所有年轻人”开始。写清楚他们在哪个平台、正在经历什么。</p></div></div><div class="step"><div><h3>记录十条内容或商品</h3><p>保存来源、标题、互动信号、评论原话和你看到的需求，不用先追求大样本。</p></div></div><div class="step"><div><h3>把原话聚成一个问题</h3><p>例如“我为什么总在关系里先退一步”，而不是空泛的“人格测试”。</p></div></div><div class="step"><div><h3>写出结果承诺</h3><p>完成这套测评后，用户会知道什么？如果一句话说不清，就继续缩小主题。</p></div></div></div>' +
+        '<h2>一个主题能不能进入制作</h2><table class="schema-table"><thead><tr><th>检查项</th><th>通过标准</th></tr></thead><tbody><tr><td>人群</td><td>能描述一个具体群体，而不是所有人</td></tr><tr><td>问题</td><td>用户已经用自己的话反复谈论</td></tr><tr><td>结果</td><td>至少能形成三个边界不同的结果</td></tr><tr><td>购买理由</td><td>结果比一篇免费内容更具体、更属于这个人</td></tr><tr><td>表达</td><td>一张封面可以让人看懂“测完得到什么”</td></tr></tbody></table>' +
+        '<div class="notice">本项目不提供虚构的市场数据。文学原型案例证明的是生产和交付能力，不证明任何平台上的需求、销量或利润。</div>' +
+      '</article><aside class="doc-aside glass-panel"><h3>完成物：测评选题卡</h3><p>把主题、人群、需求证据、购买理由和结果原型写在同一页。没有外部证据，就先不进入题目制作。</p><div class="asset-list"><a class="asset-row" href="playbook/templates/01-topic-card.md" download><span class="asset-ext">MD</span><span><strong>测评选题卡</strong><span>需求证据与商品定义</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="playbook/templates/06-review-sheet.csv" download><span class="asset-ext">CSV</span><span><strong>经营记录表</strong><span>发布后记录真实结果</span></span><span class="asset-arrow">↓</span></a></div><a class="btn block primary" href="#/prompts">选题通过，开始做题 →</a></aside></div></section>',
+      "内容分析", "roadmap"
+    );
+  }
+
+  function viewSell() {
+    render(
+      '<section class="doc-hero"><div class="content"><span class="section-kicker">SELL & DELIVER · 销售与交付</span><h1>平台负责收款，<br>你负责把链接发完整。</h1><p>第一版不做支付、账号、兑换码和自动化。内容让用户产生兴趣，商品页讲清交付物，买家付款后发送链接。</p></div></section>' +
+      '<section><div class="content doc-layout"><article class="doc-main glass-panel"><h2>销售内容的五段结构</h2><div class="steps"><div class="step"><div><h3>从一个具体场景开始</h3><p>先让目标用户认出自己，不要先介绍“我们做了一套测试”。</p></div></div><div class="step"><div><h3>指出没被说清的问题</h3><p>把场景背后的身份、关系或选择困惑说出来。</p></div></div><div class="step"><div><h3>说明测完得到什么</h3><p>题目数、预计时长、结果数量，以及结果会解释什么。</p></div></div><div class="step"><div><h3>展示一个结果切片</h3><p>用名字、特征或结果卡制造具体期待，但不要虚构评价与销量。</p></div></div><div class="step"><div><h3>给出明确行动指令</h3><p>告诉用户商品入口在哪里、购买后收到的是一条测评链接。</p></div></div></div>' +
+        '<h2>商品页只要说清四件事</h2><ul><li>这套测评叫什么、适合谁；</li><li>有多少题、大约多久、最后看到什么；</li><li>交付物是一条在线测评链接；</li><li>它是娱乐、自我观察与社交表达内容，不是专业诊断。</li></ul>' +
+        '<h2>交付就是发一条完整链接</h2><p>订单完成后发送标准话术和完整链接。买家能够打开页面并开始答题，本次最小交付成立。特别提醒：链接中 <code>#</code> 后面的长文本也是题目的一部分，不能被聊天工具截断。</p>' +
+        '<h2>第一版接受的损耗</h2><p>同一链接可以重复打开，也可能被转发。不要为了防住每一次转发，先建设支付回调、兑换码、账户和后台。先验证主题、内容、价格和交付是否能形成真实订单。</p>' +
+        '<div class="notice">销售平台的规则会变化。模板只描述通用业务结构；经营者必须在发布前自行核对所用平台当期允许的商品、宣传、交付和售后方式。</div>' +
+      '</article><aside class="doc-aside glass-panel"><h3>销售与交付包</h3><div class="asset-list"><a class="asset-row" href="playbook/templates/02-sales-note.md" download><span class="asset-ext">MD</span><span><strong>销售内容模板</strong><span>封面、标题与正文结构</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="playbook/templates/03-product-listing.md" download><span class="asset-ext">MD</span><span><strong>商品说明模板</strong><span>内容、边界与常见问题</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="playbook/templates/04-delivery-message.md" download><span class="asset-ext">MD</span><span><strong>链接交付话术</strong><span>标准发送与异常排查</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="playbook/templates/05-first-sale-checklist.md" download><span class="asset-ext">MD</span><span><strong>首单检查表</strong><span>发布前逐项核对</span></span><span class="asset-arrow">↓</span></a></div><a class="btn block primary" href="#/case">对照完整案例 →</a></aside></div></section>',
+      "销售与交付", "roadmap"
+    );
+  }
+
+  function viewCase() {
+    var firstHref = PRESETS.length ? "#/t/" + PRESETS[0].id : "#/tests";
+    render(
+      '<section class="doc-hero"><div class="content"><span class="section-kicker">END-TO-END CASE · 完整案例</span><h1>文学原型测评，<br>从商品假设到链接交付。</h1><p>这是整套方法的可运行样品。它证明生产和交付链路可以跑通，但不伪装成市场销量或收益证明。</p><div class="hero-actions"><a class="btn primary" href="' + firstHref + '">先站在买家视角试玩 →</a><a class="btn" href="playbook/case-literary-archetype.md" download>下载案例文档</a></div></div></section>' +
+      '<section class="section-block compact"><div class="content"><div class="case-chain"><article><span>商品假设</span><h3>文学人物提供一种有文化语境的身份解释</h3><p>目标用户喜欢文学人物、人格测评与可以分享的自我表达。</p></article><article><span>供给</span><h3>12 道场景题，8 个结果原型</h3><p>题目、计分、解释、结果卡与网站共同组成一件商品。</p></article><article><span>连接</span><h3>用场景和结果切片制造“我也想测”</h3><p>平台内容负责兴趣，商品页负责说明，平台能力负责交易。</p></article><article><span>交付</span><h3>付款后发送完整测评链接</h3><p>买家打开、答题、看到主原型与次要底色，交付完成。</p></article></div></div></section>' +
+      '<section class="section-block"><div class="content"><div class="section-head row"><div><span class="section-kicker">THE PRODUCT · 最终商品体验</span><h2>买家实际拿到的，就是下面这套体验。</h2><p>从封面进入，一屏一题，完成后得到结果解释和可保存的结果卡。</p></div><a class="text-link" href="#/tests">查看全部样品 →</a></div><div class="test-grid">' + PRESETS.slice(0, 3).map(testCard).join("") + '</div></div></section>' +
+      '<section class="section-block"><div class="content split-statement"><div><span class="section-kicker">EVIDENCE BOUNDARY · 证据边界</span><h2>案例可以证明“能做出来”，不能证明“必然卖得出去”。</h2></div><div class="check-stack"><p>已证明：题库可以生成和校验</p><p>已证明：网站可以完整答题</p><p>已证明：结果卡和链接可以交付</p><p>未证明：任何平台的需求与销量</p><p>未证明：价格、转化率或利润</p></div></div></section>',
+      "完整案例", "case"
+    );
+  }
+
+  function viewTools() {
+    render(
+      '<section class="doc-hero"><div class="content"><span class="section-kicker">OPEN TOOLBOX · 开源工具箱</span><h1>每一步，都有一份<br>可以直接带走的文件。</h1><p>从选题、出题、生成链接到销售与交付，所有模板、提示词、代码和案例都不设登录与付费墙。</p></div></section>' +
+      '<section class="section-block compact"><div class="content tool-sections">' +
+        '<div><div class="section-head"><span class="section-kicker">01 · 内容与选品</span><h2>先证明有人想测。</h2></div><div class="asset-grid"><a class="asset-row" href="playbook/templates/01-topic-card.md" download><span class="asset-ext">MD</span><span><strong>测评选题卡</strong><span>记录需求证据与商品定义</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="#/research"><span class="asset-ext">WEB</span><span><strong>内容分析教程</strong><span>十条证据到一句承诺</span></span><span class="asset-arrow">→</span></a></div></div>' +
+        '<div><div class="section-head"><span class="section-kicker">02 · 题目与建站</span><h2>把主题变成一条链接。</h2></div><div class="asset-grid"><a class="asset-row" href="#/prompts"><span class="asset-ext">WEB</span><span><strong>AI 出题提示词</strong><span>输入主题，生成标准 JSON</span></span><span class="asset-arrow">→</span></a><a class="asset-row" href="skill/doubao-skill.md" download><span class="asset-ext">MD</span><span><strong>豆包使用说明</strong><span>给普通经营者</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="skill/create-feiye-quiz/SKILL.md" download><span class="asset-ext">SKILL</span><span><strong>Agent 出题 Skill</strong><span>提示、规范与验证脚本</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="#/create"><span class="asset-ext">APP</span><span><strong>测评链接生成器</strong><span>上传、校验、试玩与复制</span></span><span class="asset-arrow">→</span></a><a class="asset-row" href="examples/deep-night-cafe.json" download><span class="asset-ext">JSON</span><span><strong>最小题库示例</strong><span>可以直接导入试玩</span></span><span class="asset-arrow">↓</span></a></div></div>' +
+        '<div><div class="section-head"><span class="section-kicker">03 · 销售与交付</span><h2>把商品说清楚、发完整。</h2></div><div class="asset-grid"><a class="asset-row" href="playbook/templates/02-sales-note.md" download><span class="asset-ext">MD</span><span><strong>平台销售内容模板</strong><span>标题、正文和发布检查</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="playbook/templates/03-product-listing.md" download><span class="asset-ext">MD</span><span><strong>商品说明模板</strong><span>交付物、边界与常见问题</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="playbook/templates/04-delivery-message.md" download><span class="asset-ext">MD</span><span><strong>链接交付话术</strong><span>标准发送与打不开排查</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="playbook/templates/05-first-sale-checklist.md" download><span class="asset-ext">MD</span><span><strong>首单检查表</strong><span>需求、题目、网站、销售、交付</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="playbook/templates/06-review-sheet.csv" download><span class="asset-ext">CSV</span><span><strong>最小经营记录表</strong><span>不收集答题隐私</span></span><span class="asset-arrow">↓</span></a></div></div>' +
+        '<div><div class="section-head"><span class="section-kicker">04 · 完整项目</span><h2>复制全部，而不是拼碎片。</h2></div><div class="asset-grid"><a class="asset-row" href="playbook/README.md" download><span class="asset-ext">MD</span><span><strong>商业模式 Playbook</strong><span>三方、七步与 MVP 边界</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="playbook/case-literary-archetype.md" download><span class="asset-ext">CASE</span><span><strong>文学原型完整案例</strong><span>商品假设到链接交付</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="' + REPO_URL + '" target="_blank" rel="noopener"><span class="asset-ext">GIT</span><span><strong>全部网站源码</strong><span>MIT · Fork、修改与商用</span></span><span class="asset-arrow">↗</span></a></div></div>' +
+      '</div></section>',
+      "开源工具箱", "tools"
     );
   }
 
@@ -429,14 +502,14 @@
     });
     var resultTotal = PRESETS.reduce(function (sum, test) { return sum + Object.keys(test.results || {}).length; }, 0);
     render(
-      '<section class="page-hero"><div class="content"><span class="section-kicker">TEST LIBRARY · 测评库</span><h1>从一个瞬间，<br>认出另一个自己。</h1><p>每套测评都由具体场景组成，没有正确答案，也不把人塞进僵硬标签。选那个最像你的瞬间。</p>' +
+      '<section class="page-hero"><div class="content"><span class="section-kicker">RUNNING PRODUCTS · 可运行样品</span><h1>先完整体验一次，<br>再复制整套方法。</h1><p>这里展示的是买家实际拿到的消费体验：进入封面、完成答题、查看结果并保存结果卡。样品免费开放，用来验证生产与交付链路。</p>' +
       '<div class="metrics"><div class="metric"><strong>' + PRESETS.length + '</strong><div class="metric-label">TESTS</div></div><div class="metric"><strong>' + resultTotal + '</strong><div class="metric-label">ARCHETYPES</div></div><div class="metric"><strong>3</strong><div class="metric-label">MINUTES</div></div><div class="metric"><strong>∞</strong><div class="metric-label">SHARES</div></div></div></div></section>' +
       '<section class="section-block compact"><div class="content">' +
         '<div class="library-tools"><input class="searchbox" id="test-search" type="search" placeholder="搜索作品、人物或气质…" aria-label="搜索测评"><div class="filter-row" role="group" aria-label="测评分类">' +
           categories.map(function (category, index) { return '<button class="filter-chip' + (index === 0 ? ' active' : '') + '" data-category="' + esc(category) + '">' + esc(category) + '</button>'; }).join("") +
         '</div></div><div class="test-grid" id="test-grid">' + PRESETS.map(testCard).join("") + '</div><div class="empty-state" id="test-empty" hidden>书架上暂时没有符合条件的测评。</div>' +
       '</div></section>',
-      "测评库", "tests"
+      "可运行样品", "case"
     );
 
     var input = document.getElementById("test-search");
@@ -475,7 +548,7 @@
         '<button class="btn primary" id="start-quiz">翻开第一页 →</button>' +
         '<div class="cover-meta"><span>' + numCN(questionCount) + ' QUESTIONS</span><span>' + numCN(resultCount) + ' ARCHETYPES</span><span>ABOUT ' + Math.max(1, Math.round(questionCount / 4)) + ' MIN</span></div>' +
       '</article></div></section>',
-      test.title, "tests"
+      test.title, "case"
     );
     document.getElementById("start-quiz").addEventListener("click", function () {
       quiz = { test: test, ref: ref, idx: 0, answers: [] };
@@ -497,7 +570,7 @@
       '<div class="quiz-progress" role="progressbar" aria-label="答题进度" aria-valuemin="0" aria-valuemax="' + total + '" aria-valuenow="' + (index + 1) + '"><i id="quiz-bar"></i></div>' +
       '<div class="q-block" id="question-block"><h1 class="q-text">' + esc(question.q) + '</h1><div class="options">' + options + '</div></div>' +
       '<div class="quiz-foot"><button id="quiz-back">' + (index === 0 ? "← 返回封面" : "← 上一题") + '</button><span>选择没有对错，只有更像此刻的你</span></div></div></section>',
-      test.title, "tests"
+      test.title, "case"
     );
     requestAnimationFrame(function () {
       var bar = document.getElementById("quiz-bar");
@@ -562,7 +635,7 @@
     render(
       '<section class="result-page"><div class="content"><div class="result-intro">' + (own ? "RESULT REVEALED · 制票完成" : "A BOOKPLATE FROM A FRIEND · 朋友寄来的藏书票") + '</div>' +
       plateHTML(test, key, secondKey) + actions + '</div></section>',
-      result.name + " · " + test.title, "tests"
+      result.name + " · " + test.title, "case"
     );
     document.getElementById("download-card").addEventListener("click", function () { downloadResultCard(test, key, secondKey); });
     var shareResultButton = document.getElementById("share-result");
@@ -770,16 +843,16 @@
 
   function viewCreate() {
     render(
-      '<section class="doc-hero"><div class="content"><span class="section-kicker">QUIZ BUILDER · 创建工作台</span><h1>把一个念头，<br>装订成一套测试。</h1><p>让 AI 出题，或上传自己的 JSON。校验通过后，题目会被压缩进分享链接——不注册、不上传数据库。</p></div></section>' +
+      '<section class="doc-hero"><div class="content"><span class="section-kicker">LINK BUILDER · 建站工作台</span><h1>把标准题库，<br>变成一条商品链接。</h1><p>让 AI 出题，或上传自己的 JSON。校验通过后，题目会被压缩进完整链接；买家付款后，把这条链接发送给他即可。</p></div></section>' +
       '<section><div class="content doc-layout"><article class="doc-main glass-panel">' +
-        '<h2>最快的做法</h2><div class="steps"><div class="step"><div><h3>告诉 AI 你的主题</h3><p>复制出题提示词发给豆包、DeepSeek、Kimi 或任何 AI。</p></div></div><div class="step"><div><h3>拿回标准 JSON</h3><p>把 AI 返回的完整内容复制下来，也可以保存成 .json 文件。</p></div></div><div class="step"><div><h3>校验、试玩、分享</h3><p>粘贴或上传后生成链接，先自己测一遍，再寄给朋友。</p></div></div></div>' +
+        '<h2>最快的做法</h2><div class="steps"><div class="step"><div><h3>告诉 AI 你的主题</h3><p>复制出题提示词发给豆包、DeepSeek、Kimi 或任何 AI。</p></div></div><div class="step"><div><h3>拿回标准 JSON</h3><p>把 AI 返回的完整内容复制下来，也可以保存成 .json 文件。</p></div></div><div class="step"><div><h3>校验、试玩、保存</h3><p>生成链接后，必须站在买家视角完整答一遍，再把链接保存为商品交付物。</p></div></div></div>' +
         '<div class="field"><label for="quick-theme">先写主题，再复制定制提示词</label><input class="text-input" id="quick-theme" placeholder="例如：测测你是《红楼梦》里的谁"><button class="btn wine" id="copy-quick-prompt">复制带主题的提示词</button></div>' +
         '<h2>导入题目</h2><div class="upload-box"><input id="json-file" type="file" accept=".json,application/json"><strong id="upload-title">点击选择或拖入 .json 文件</strong><span>文件只在本机读取，不会上传</span></div>' +
         '<div class="field"><label for="json-paste">或者直接粘贴 JSON</label><textarea class="paste" id="json-paste" spellcheck="false" placeholder=\'{ "title": "…", "questions": [ … ], "results": { … } }\'></textarea></div>' +
         '<p class="field-note">解析器会自动去掉 ``` 围栏和尾逗号；题目最多 50 道、结果最多 24 个、原始 JSON 不超过 40KB。</p>' +
-        '<div class="btn-row"><button class="btn primary" id="build-link">校验并生成分享链接</button><button class="btn" id="fill-sample">填入最小示例</button></div><div id="create-feedback" aria-live="polite"></div>' +
-      '</article><aside class="doc-aside glass-panel"><h3>链接即数据库</h3><p>扉页不会保存你的题目和答案。整套题经压缩后编码在 URL 的 <code>#</code> 后面，服务器看不到这部分内容。</p><ul><li>不需要账号</li><li>没有审核与广告</li><li>链接在，题目就在</li><li>内容可随仓库一起开源</li></ul><a class="btn block" href="#/prompts">查看完整提示词</a><a class="btn block" href="#/opensource" style="margin-top:10px">查看题目格式</a></aside></div></section>',
-      "创建测试", "create"
+        '<div class="btn-row"><button class="btn primary" id="build-link">校验并生成商品链接</button><button class="btn" id="fill-sample">填入最小示例</button></div><div id="create-feedback" aria-live="polite"></div>' +
+      '</article><aside class="doc-aside glass-panel"><h3>链接就是第一版交付物</h3><p>扉页不会保存题目和答案。整套题经压缩后编码在 URL 的 <code>#</code> 后面，服务器看不到这部分内容。</p><ul><li>不需要账号或支付接入</li><li>同一链接可以重复打开</li><li>链接在，题目就在</li><li>第一版接受链接被转发</li></ul><a class="btn block" href="#/prompts">查看完整提示词</a><a class="btn block" href="#/sell" style="margin-top:10px">下一步：销售与交付</a></aside></div></section>',
+      "生成商品链接", "roadmap"
     );
     var textarea = document.getElementById("json-paste");
     var fileInput = document.getElementById("json-file");
@@ -823,7 +896,7 @@
       var lengthWarning = url.length > 8000 ? ["分享链接超过 8,000 字符，部分 App 可能截断。建议精简结果描述。"] : [];
       var warnings = normalized.warnings.concat(lengthWarning);
       feedback.innerHTML = (warnings.length ? '<div class="feedback-box warning">' + esc(warnings.join("\n")) + '</div>' : '') +
-        '<div class="generated glass-panel"><h3>《' + esc(normalized.test.title) + '》装订完成</h3><div class="generated-meta">' + normalized.test.questions.length + ' 道题 · ' + Object.keys(normalized.test.results).length + ' 种结果 · 链接约 ' + (url.length > 1024 ? (url.length / 1024).toFixed(1) + ' KB' : url.length + ' 字符') + '</div>' +
+        '<div class="generated glass-panel"><h3>《' + esc(normalized.test.title) + '》商品链接已生成</h3><div class="generated-meta">' + normalized.test.questions.length + ' 道题 · ' + Object.keys(normalized.test.results).length + ' 种结果 · 链接约 ' + (url.length > 1024 ? (url.length / 1024).toFixed(1) + ' KB' : url.length + ' 字符') + '</div>' +
         '<div class="linkline"><input class="text-input" id="made-url" readonly value="' + esc(url) + '"><button class="btn small wine" id="copy-made">复制链接</button></div><div class="btn-row" style="margin-top:12px"><a class="btn small" href="' + esc(hash) + '">先自己试玩 →</a><button class="btn small" id="download-json">下载标准 JSON</button></div></div>';
       document.getElementById("copy-made").addEventListener("click", function () { copyText(url, "分享链接已复制"); });
       document.getElementById("made-url").addEventListener("click", function () { this.select(); });
@@ -836,7 +909,7 @@
   function viewPrompts() {
     var initialPrompt = skillPrompt("");
     render(
-      '<section class="doc-hero"><div class="content"><span class="section-kicker">PROMPT LIBRARY · 提示词库</span><h1>一句主题，<br>长成一套好题。</h1><p>这不是藏起来卖的咒语。完整提示词、变量、JSON 结构和可安装 Skill 全部公开。</p><div class="metrics"><div class="metric"><strong>1</strong><div class="metric-label">PROMPT</div></div><div class="metric"><strong>1</strong><div class="metric-label">SCHEMA</div></div><div class="metric"><strong>1</strong><div class="metric-label">SKILL</div></div><div class="metric"><strong>0</strong><div class="metric-label">PAYWALL</div></div></div></div></section>' +
+      '<section class="doc-hero"><div class="content"><span class="section-kicker">QUESTION PRODUCTION · 题目制作</span><h1>一句商品主题，<br>长成一套标准题库。</h1><p>完整提示词、变量、JSON 结构和可安装 Skill 全部公开。经营者需要核实内容质量，再把题库送进链接生成器。</p><div class="metrics"><div class="metric"><strong>1</strong><div class="metric-label">PROMPT</div></div><div class="metric"><strong>1</strong><div class="metric-label">SCHEMA</div></div><div class="metric"><strong>1</strong><div class="metric-label">SKILL</div></div><div class="metric"><strong>0</strong><div class="metric-label">PAYWALL</div></div></div></div></section>' +
       '<section><div class="content doc-layout"><article class="doc-main glass-panel"><h2>文学原型测评出题器</h2><p>输入一个具体主题，提示词会自动把它放到最后。复制整段发给豆包、DeepSeek、Kimi、ChatGPT 或任何支持长文本的 AI。</p>' +
         '<div class="field"><label for="prompt-theme">你的测试主题</label><input class="text-input" id="prompt-theme" placeholder="例如：你是哪种宋朝文人"></div>' +
         '<div class="code-wrap"><pre class="codeblock" id="prompt-block">' + esc(initialPrompt) + '</pre><button class="btn small wine copy-float" id="copy-prompt">复制提示词</button></div>' +
@@ -844,7 +917,7 @@
         '<h2>它解决了什么</h2><div class="steps"><div class="step"><div><h3>先定结果，再写问题</h3><p>避免题目写完才硬凑人格，保证每个结果都有清晰边界。</p></div></div><div class="step"><div><h3>用场景代替性格审问</h3><p>不问“你是否敏感”，而问雨停以后你会不会回头。</p></div></div><div class="step"><div><h3>做评分覆盖检查</h3><p>每个结果获得足够的主要得分机会，避免存在永远测不出的摆设结果。</p></div></div><div class="step"><div><h3>拒绝伪造文学引文</h3><p>不能确认出处时留空，不让“文学感”建立在假名言上。</p></div></div></div>' +
         '<h2>输出字段</h2><table class="schema-table"><thead><tr><th>字段</th><th>作用</th></tr></thead><tbody><tr><td><code>title / subtitle</code></td><td>封面标题与副标题</td></tr><tr><td><code>questions[].options[].scores</code></td><td>选项对应的原型权重</td></tr><tr><td><code>results</code></td><td>原型名、出处、引文、解读、特质和色相</td></tr><tr><td><code>hue</code></td><td>控制结果卡强调色，范围 0—360</td></tr></tbody></table>' +
       '</article><aside class="doc-aside glass-panel"><h3>三种带走方式</h3><div class="asset-list"><a class="asset-row" href="skill/doubao-skill.md" download><span class="asset-ext">MD</span><span><strong>豆包使用说明</strong><span>给普通创作者</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="skill/create-feiye-quiz/SKILL.md" download><span class="asset-ext">SKILL</span><span><strong>Codex / Agent Skill</strong><span>给 AI 工作台</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="skill/create-feiye-quiz/references/schema.md" download><span class="asset-ext">JSON</span><span><strong>字段与评分规范</strong><span>给开发者</span></span><span class="asset-arrow">↓</span></a></div><p style="margin-top:24px">拿到 AI 返回的 JSON 后，不要手改格式。先去创建工作台校验，它会用中文指出问题。</p><a class="btn block primary" href="#/create">打开创建工作台</a></aside></div></section>',
-      "出题提示词", "prompts"
+      "题目制作", "roadmap"
     );
     var themeInput = document.getElementById("prompt-theme");
     var promptBlock = document.getElementById("prompt-block");
@@ -858,28 +931,28 @@
 
   function viewOpenSource() {
     render(
-      '<section class="doc-hero"><div class="content"><span class="section-kicker">BUILD IN PUBLIC · 建站方法</span><h1>复制的不是页面，<br>是完整闭环。</h1><p>从题目 JSON、评分，到结果卡与部署，这里把扉页如何工作全部摊开。你可以照着做，也可以直接 Fork。</p></div></section>' +
+      '<section class="doc-hero"><div class="content"><span class="section-kicker">BUILD IN PUBLIC · 开源说明</span><h1>复制的不是一个页面，<br>是完整的生意生产线。</h1><p>商业模型、操作教程、题库、结果卡、销售模板、交付话术和部署方法全部摊开。项目本身免费开源，允许经营者用它制作自己的商业商品。</p></div></section>' +
       '<section><div class="content doc-layout"><article class="doc-main glass-panel">' +
-        '<h2>这座网站只有四层</h2><div class="architecture"><div class="tree-row"><code>index.html</code><span>入口、搜索分享描述与社交预览</span></div><div class="tree-row"><code>assets/presets.js</code><span>内置测评数据，增加一套题只需增加一个对象</span></div><div class="tree-row"><code>assets/app.js</code><span>路由、答题、评分、压缩、校验、分享与结果卡生成</span></div><div class="tree-row"><code>assets/style.css</code><span>Stardime 式黑色系统外壳与扉页藏书票视觉</span></div><div class="tree-row"><code>skill/create-feiye-quiz/</code><span>可安装的出题 Skill、字段规范和验证脚本</span></div></div>' +
+        '<h2>仓库里的五层资产</h2><div class="architecture"><div class="tree-row"><code>index.html</code><span>入口、搜索分享描述与社交预览</span></div><div class="tree-row"><code>assets/</code><span>商业页面、答题应用、内置题库、评分、压缩、分享与结果卡</span></div><div class="tree-row"><code>playbook/</code><span>商业模式、完整案例、选题、销售、商品、交付与复盘模板</span></div><div class="tree-row"><code>skill/</code><span>豆包说明、可安装出题 Skill、字段规范和确定性验证脚本</span></div><div class="tree-row"><code>examples/</code><span>可以直接导入链接生成器的最小标准题库</span></div></div>' +
         '<div class="notice">没有框架、数据库、统计脚本或外部字体。浏览器就是运行环境；分享链接就是自建测试的数据库。</div>' +
         '<h2>从零部署</h2><div class="steps"><div class="step"><div><h3>Fork 仓库</h3><p>在 GitHub 右上角 Fork，或者 Use this template 创建自己的副本。</p></div></div><div class="step"><div><h3>修改品牌与题库</h3><p>改 index.html 的站点信息、app.js 的仓库地址，在 presets.js 增删题目。</p></div></div><div class="step"><div><h3>打开 GitHub Pages</h3><p>Settings → Pages → Deploy from a branch → main / root。</p></div></div><div class="step"><div><h3>拿到公开网址</h3><p>几分钟后访问 https://你的用户名.github.io/仓库名/。</p></div></div></div>' +
         '<h3>本地预览</h3><pre class="codeblock">git clone ' + REPO_URL + '.git\ncd feiye\npython3 -m http.server 8000\n# 打开 http://localhost:8000</pre>' +
         '<h2>评分是怎么工作的</h2><p>每个选项把 2 分给主要倾向、1 分给次要倾向。答完后累加所有结果的分数，最高分成为主原型，第二名作为“次要底色”。同分时按 results 中的顺序稳定决胜。</p><p>创建工作台还会检查：scores 是否引用了不存在的 key、每个结果是否被命中、主要得分机会是否过少、题目与文件是否超限。</p>' +
-        '<h2>为什么不存服务器</h2><p>自建题目经 <code>JSON → UTF-8 → deflate → base64url</code> 压缩后放进 URL hash。浏览器不会把 hash 发送给服务器，因此题目和答案都留在用户设备上。</p><p>代价是链接较长、无法统一删除或编辑，也没有动态社交预览。等真实需求证明短链接值得维护，再接一个可选的 Worker 存储层。</p>' +
-        '<h2>安全与边界</h2><ul><li>所有用户文本在渲染前转义，不能注入 HTML 或脚本。</li><li>JSON 限制为 40KB、50 道题、24 个结果，避免分享链接失控。</li><li>网站不记录答案、不写 Cookie、不加载统计脚本。</li><li>AI 生成的文学引文仍需人工核实；提示词明确要求“不确定就留空”。</li></ul>' +
-      '</article><aside class="doc-aside glass-panel"><h3>开源交付包</h3><div class="asset-list"><a class="asset-row" href="' + REPO_URL + '" target="_blank" rel="noopener"><span class="asset-ext">GIT</span><span><strong>完整源码</strong><span>MIT License</span></span><span class="asset-arrow">↗</span></a><a class="asset-row" href="README.md" download><span class="asset-ext">MD</span><span><strong>README</strong><span>安装与二创说明</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="skill/create-feiye-quiz/SKILL.md" download><span class="asset-ext">SKILL</span><span><strong>出题 Skill</strong><span>Agent 可直接使用</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="assets/presets.js" download><span class="asset-ext">JS</span><span><strong>三套示例题</strong><span>可直接替换</span></span><span class="asset-arrow">↓</span></a></div><p style="margin-top:24px">MIT 协议允许 Fork、修改与商用。扉页额外提出一个非强制请求：不要把普通用户完成测评的基本链路改成按次付费。</p><a class="btn block primary" href="' + REPO_URL + '" target="_blank" rel="noopener">在 GitHub 查看源码 ↗</a></aside></div></section>',
-      "开源建站方法", "opensource"
+        '<h2>为什么第一版不存服务器</h2><p>自建题目经 <code>JSON → UTF-8 → deflate → base64url</code> 压缩后放进 URL hash。经营者拿到的这一条完整链接，就是可以保存和发送的商品交付物。</p><p>代价是链接较长、可以转发、无法统一删除或编辑。第一版接受这些损耗；只有真实订单证明复杂系统值得维护，才考虑短链接、兑换码或自动交付。</p>' +
+        '<h2>安全、经营与证据边界</h2><ul><li>所有用户文本在渲染前转义，JSON 限制为 40KB、50 道题、24 个结果。</li><li>网站不记录答案、不写 Cookie、不加载统计脚本。</li><li>AI 生成的事实、作品名和文学引文仍需人工核实。</li><li>案例只证明生产和交付能力，不证明需求、销量、价格或利润。</li><li>平台规则会变化，经营者需要在发布前自行核对当期规则。</li></ul>' +
+      '</article><aside class="doc-aside glass-panel"><h3>开源交付包</h3><div class="asset-list"><a class="asset-row" href="' + REPO_URL + '" target="_blank" rel="noopener"><span class="asset-ext">GIT</span><span><strong>完整源码</strong><span>MIT License</span></span><span class="asset-arrow">↗</span></a><a class="asset-row" href="playbook/README.md" download><span class="asset-ext">MD</span><span><strong>商业模式 Playbook</strong><span>三方、七步与 MVP 边界</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="README.md" download><span class="asset-ext">MD</span><span><strong>项目 README</strong><span>安装、使用与目录说明</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="skill/create-feiye-quiz/SKILL.md" download><span class="asset-ext">SKILL</span><span><strong>出题 Skill</strong><span>Agent 可直接使用</span></span><span class="asset-arrow">↓</span></a><a class="asset-row" href="playbook/templates/05-first-sale-checklist.md" download><span class="asset-ext">MD</span><span><strong>首单检查表</strong><span>从需求到链接交付</span></span><span class="asset-arrow">↓</span></a></div><p style="margin-top:24px">MIT 协议允许 Fork、修改与商用。扉页网站本身不靠这套方法收费，也不对任何经营结果作保证。</p><a class="btn block primary" href="' + REPO_URL + '" target="_blank" rel="noopener">在 GitHub 查看源码 ↗</a></aside></div></section>',
+      "开源说明", "opensource"
     );
   }
 
   /* ---------- loading, errors and routes ---------- */
 
   function viewLoading() {
-    render('<section class="cover-page"><div class="content"><div class="cover-card glass-panel"><span class="section-kicker">BINDING · 装订中</span><h1>…</h1><p class="cover-sub">正在从链接里翻出这套题。</p></div></div></section>', "装订中", "tests");
+    render('<section class="cover-page"><div class="content"><div class="cover-card glass-panel"><span class="section-kicker">BINDING · 装订中</span><h1>…</h1><p class="cover-sub">正在从链接里翻出这套题。</p></div></div></section>', "装订中", "case");
   }
 
   function viewError(message) {
-    render('<section class="cover-page"><div class="content"><div class="cover-card glass-panel"><span class="section-kicker">DAMAGED PAGE · 页面破损</span><h1>打不开这套题</h1><p class="cover-desc">' + esc(message) + '</p><div class="btn-row" style="justify-content:center"><a class="btn primary" href="#/tests">回到测评库</a><a class="btn" href="#/create">创建一套新的</a></div></div></div></section>', "链接无效", "tests");
+    render('<section class="cover-page"><div class="content"><div class="cover-card glass-panel"><span class="section-kicker">DAMAGED PAGE · 页面破损</span><h1>打不开这套题</h1><p class="cover-desc">' + esc(message) + '</p><div class="btn-row" style="justify-content:center"><a class="btn primary" href="#/tests">回到样品库</a><a class="btn" href="#/create">重新生成链接</a></div></div></div></section>', "链接无效", "case");
   }
 
   function quizGuard(parts) {
@@ -894,6 +967,12 @@
     var parts = hash.split("/").filter(Boolean);
     quizGuard(parts);
     if (parts.length === 0) return viewHome();
+    if (parts[0] === "business" || parts[0] === "model") return viewBusiness();
+    if (parts[0] === "roadmap" || parts[0] === "start") return viewRoadmap();
+    if (parts[0] === "research" || parts[0] === "analyze") return viewResearch();
+    if (parts[0] === "sell" || parts[0] === "deliver") return viewSell();
+    if (parts[0] === "case") return viewCase();
+    if (parts[0] === "tools" || parts[0] === "assets") return viewTools();
     if (parts[0] === "tests") return viewTests();
     if (parts[0] === "create") return viewCreate();
     if (parts[0] === "prompts" || parts[0] === "prompt" || parts[0] === "skill") return viewPrompts();
